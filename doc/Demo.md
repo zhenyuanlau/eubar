@@ -1,11 +1,11 @@
-# UBA 应用
+# Demo 应用
 
-UBA(User Behavior Analysis), 用户行为数据分析应用的规格说明.
+一个简单的用户行为分析应用的规格说明.
 
 ## 功能特性
 
-1. 通过 Ad-Hoc 命令, 查询统计结果
-2. 通过 Dashboard 获取事件分析数据
+1. Ad-Hoc
+2. Dashboard
 
 ## 服务组件
 
@@ -18,8 +18,8 @@ UBA(User Behavior Analysis), 用户行为数据分析应用的规格说明.
 ## 数据模型
 
 ```erlang
--record(event, {uid, key, time}).
--record(user, {id, name, mobile }).
+% event
+% user
 ```
 
 ## 接口设计

@@ -1,18 +1,21 @@
 # 快学 Erlang
+
+> Erlang 不是银弹!
+
 Erlang -- 一种新的解决问题的思维方式, 一个强大的工具箱(函数式/并发/分布式/容错).
 
 快乐学习 Erlang!
 
 ## 设计哲学
 
+>
 >编程模型基于对现实世界的观察.
 >
 >Erlang 程序模拟了人类如何思考, 如何交互.
 >
 
-
 ## 准备
-[[Erlang.excalidraw]]
+具备`命令式编程语言`的知识.
 
 ### 环境
 
@@ -83,6 +86,10 @@ help().
 
 ```bash
 erlc user_default.erl
+
+$ erl
+c(user_default).
+
 ```
 
 ### 运行
@@ -248,42 +255,53 @@ X.
 ### 语法特性
 
 ```erlang
+% 无块注释
+
 
 % 变量名必须首字母大写
 
 L = [1, 2, 3, 4, 5].
 
-% 无块注释
+% 无 for/while 循环结构, 使用递归/模式匹配
 
 ```
 
 
-## 一个 UBA 应用
-
-[[UBA.excalidraw]]
-
 ## 函数式编程
-速记, M:F(A) 和 M:F/A.
 
-### 原则/思维
+Erlang 不是纯粹的函数式编程语言.
+
+### 思维
 
 ```erlang
+
+% 声明式
+
 
 % 不变性
 
 X = 1.
 X = 2. % ** exception error: no match of right hand side value 2
 
+% 引用透明性 := 参数相同, 返回值永远相同
+
+io:format("Rules are made to be broken~n").
+
 
 % 数据转换 := 函数将输入转换成输出.
 
 io:format("I't not a pure function~n").
+
+% 递归思想
+
 
 ```
 
 ### 函数
 
 > 函数是数据转换器.
+
+速记, M:F(A) 和 M:F/A.
 
 #### 匿名函数
 相比具名函数, 匿名函数作参数更为简便；不能递归调用.
@@ -345,7 +363,6 @@ double([])    -> [].
 
 ```erlang
 
-
 % 能返回函数的函数
 
 F = fun (Name) -> fun() -> io:format("~p~n", [Name]) end end.
@@ -384,8 +401,9 @@ G().
 ### 模式匹配
 模式匹配是 Erlang 的根基；Erlang 的模式匹配灵活且完备.
 
-```erlang
+#### 绑定变量
 
+```erlang
 % 通过模式绑定变量
 
 N = 42.
@@ -396,11 +414,6 @@ N = 42.
 [X, X] = [1, 1].
 [Y, Y] = [X, 2].
 
-%% 匿名变量
-
-{ok,_} = {ok, X}.
-
-
 % 通过模式提取数据
 
 L = [1, 2, 3, 4, 5].
@@ -408,15 +421,29 @@ L = [1, 2, 3, 4, 5].
 [H|T] = L.
 
 
-% 通过模式选择表达式分支
+% 匿名变量
 
-start() ->
-	receive
-		event ->
-			io:format("receive an event.");
-		_ ->
-			io:format("unknown.")
-	end.
+{ok,_} = {ok, X}.
+
+
+```
+
+#### 选择分支
+
+```erlang
+
+% 通过模式选择表达式分支
+receive
+	event ->
+		io:format("receive an event.");
+	_ ->
+		io:format("unknown.")
+end.
+```
+
+#### 选择子句
+
+```erlang
 
 % 通过模式选择函数子句
 
@@ -428,6 +455,14 @@ double([]).
 
 double([1, 2, 3])
 
+
+
+```
+
+#### 控制抽象
+
+```erlang
+
 % 通过模式实现控制抽象
 %% if/switch/for/while
 
@@ -435,6 +470,7 @@ double([1, 2, 3])
 % 扩展模式,卫模式
 
 ```
+
 
 ### 模块
 模块是一个具名文件, 包含一组具名函数(可能还有记录/宏).
@@ -465,6 +501,10 @@ clear() ->
 
 ### 类型系统
 Erlang 没有字符串类型.
+
+#### 内置类型
+
+数据类型 := 值集合 + 操作集合.
 
 ```erlang
 % 数据类型
@@ -506,13 +546,16 @@ erlang:is_list("string").
 % 二进制/位语法
 
 
-
 % 引用
 
 % erlang:make_ref().
 
 
-% 类型检测
+```
+
+#### 类型检测
+
+```erlang
 
 % erlang:is_*
 
@@ -522,18 +565,21 @@ is_list("abc"). % true
 
 is_bitstring(<<"abc">>). % true
 
-% 类型转换
+```
 
+#### 类型转换
+
+```erlang
 % erlang:*_to_*
 
 erlang:list_to_integer("123").
-
-% 类型表示法
-
-%% 类型定义
-%% 类型注解
+```
 
 
+#### 类型注解
+
+```erlang
+-spec start() -> {ok,pid()}.
 ```
 
 
@@ -548,6 +594,10 @@ erlang:list_to_integer("123").
 >
 > 进程只能通过发送和接收消息来与其他进程通信.
 >
+
+### 进程
+
+Erlang 采用 Actor 模型, 每个 Actor 都是虚拟机中的一个独立进程(无共享内存).
 
 ```erlang
 
@@ -570,6 +620,17 @@ Actor ! { self(), "Click" }.
 flush().
 
 ```
+
+### 消息
+
+```erlang
+
+self() ! "hi".
+
+flush().
+
+```
+
 
 ## 容错式编程
 ### 错误/异常
@@ -657,30 +718,34 @@ erlang:monitor(process, spawn(fun() -> F() end)).
 flush().
 
 ```
-
 ## 分布式编程
+
+### 节点
 
 ```bash
 
 $ erl -sname collector
 
-(collector@zmbp)1> register(shell, self()).
+(collector@ambp)1> register(shell, self()).
 
 
 $ erl -sname generator
 
-(generator@zmbp)2> register(shell, self()).
+(generator@ambp)2> register(shell, self()).
 
 ```
 
+### 通信
+
 ```bash
-(generator@zmbp)1> net_kernel:connect_node(collector@zmbp).
+
+(generator@ambp)1> net_kernel:connect_node(collector@ambp).
 true
-(generator@zmbp)1> {shell, collector@zmbp} ! {hello, from, self()}.
+(generator@ambp)1> {shell, collector@ambp} ! {hello, from, self()}.
 {hello,from,<0.87.0>}
 
 
-(collector@zmbp)10> flush().
+(collector@ambp)10> flush().
 Shell got {hello,from,<9637.87.0>}
 ok
 

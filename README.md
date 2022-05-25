@@ -1,33 +1,14 @@
 Erlang Spec
 =====
 
-Config
+Learn
 -----
-```erlang
-% $HOME/.erlang.d/user_default.erl
 
--module(user_default).
--export([clear/0]).
+[快学 Erlang](https://github.com/zhenyuanlau/erlang-spec/blob/main/doc/Erlang.md)
 
-clear() ->
-  io:format(os:cmd(clear)).
-
-% $HOME/.erlang
-
-{ok,[[HOME_PATH]]} = init:get_argument(home).
-
-USER_DEFAULT_PATH = filename:join([HOME_PATH, ".erlang.d", "user_default"]).
-
-code:load_abs(USER_DEFAULT_PATH).
-
-```
-
-Build
+Demo
 -----
     $ erl -make
-
-Usage
------
     $ erl -pa ebin/
 
     $ uba_app:start().
