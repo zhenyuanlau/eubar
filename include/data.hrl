@@ -1,4 +1,4 @@
--record(event, {uid, key, time}).
--record(user, {id, name, mobile }).
+-record(event, {id, user_id, name, time, device}).
+-record(user, {id, name, wechat, mobile}).
 
 -define(REPORT_FILE, "/tmp/reports/report").

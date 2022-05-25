@@ -3,10 +3,13 @@
 
 start() ->
     ChildSpecList = [
-      {reporter, start, []}
+      {generator, start, []},
+      {collector, start, []},
+      {processor, start, []},
+      {reporter, start, []},
+      {dashboard, start, []}
     ],
     uba_sup:start(uba, ChildSpecList).
 
 stop() ->
-    ok.
-
+  uba_sup:stop(uba).

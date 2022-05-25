@@ -3,6 +3,8 @@
 -export([start/0, init/0, loop/0]).
 -export([call/1, reply/2, stop/0]).
 
+-spec start() -> {ok,pid()}.
+
 start() ->
   Pid = spawn(?MODULE, init, []),
   register(reporter, Pid),

@@ -1,8 +1,11 @@
 -module(generator).
 -export([start/0, loop/1, emit/1]).
 
+-spec start() -> {ok,pid()}.
 start() ->
-  spawn_link(?MODULE, loop, [5000]).
+  Pid = spawn_link(?MODULE, loop, [5000]),
+  register(generator, Pid),
+  {ok, Pid}.
 
 timer(Timeout, Fun) ->
   receive

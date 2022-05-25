@@ -1,9 +1,12 @@
 -module(collector).
 -export([start/0, rpc/1, loop/1]).
 
+-spec start() -> {ok,pid()}.
+
 start() ->
-  P = spawn(?MODULE, loop, [[]]),
-  register(collector, P).
+  Pid = spawn(?MODULE, loop, [[]]),
+  register(collector, Pid),
+  {ok, Pid}.
 
 rpc(Request) ->
   collector ! {self(), Request},
