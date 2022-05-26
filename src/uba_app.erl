@@ -1,7 +1,7 @@
 -module(uba_app).
--export([start/0, stop/0]).
+-export([start/2, stop/1]).
 
-start() ->
+start(_Type, _Args) ->
     ChildSpecList = [
       {generator, start, []},
       {collector, start, []},
@@ -11,5 +11,5 @@ start() ->
     ],
     uba_sup:start(uba, ChildSpecList).
 
-stop() ->
+stop(_State) ->
   uba_sup:stop(uba).

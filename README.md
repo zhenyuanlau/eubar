@@ -9,7 +9,7 @@ Learn
 Demo
 -----
     $ make compile
-    $ make console
+    $ make start
 
     $ uba_app:start().
     $ reporter:call(query).

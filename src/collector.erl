@@ -23,8 +23,7 @@ loop(EventList) ->
     {From, {view}} ->
       From ! {self(), EventList},
       loop(EventList);
-    Any ->
-      io:format("Recevied:~p~n", [Any]),
+    _Any ->
       loop(EventList)
   after
     30000 ->
