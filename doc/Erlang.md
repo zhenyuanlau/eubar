@@ -14,6 +14,7 @@ Erlang -- 一种新的解决问题的思维方式, 一个强大的工具箱(函�
 >Erlang 程序模拟了人类如何思考, 如何交互.
 >
 
+
 ## 准备
 具备`命令式编程语言`的知识.
 
@@ -80,6 +81,9 @@ User switch command
 
 help().
 
+f().
+flush().
+
 ```
 
 ### 编译
@@ -103,6 +107,8 @@ erl +Wi -noshell -pa ebin/ -s quick start -s init stop
 
 > 想想英语.
 
+相对而言, Erlang 的语法是简单的.
+
 ### 表达式
 
 > 请记住, Erlang 里的一切都是表达式, 而表达式都具有值.
@@ -117,39 +123,35 @@ Erlang 的表达式包含
 
 ```erlang
 
-% 算术表达式
-
-X = 1.
-
 % 模式匹配(变量绑定)
 
 N = 42.
 
-% 函数调用 Module:Function(Arguments)
+% 算术表达式
 
-io:format("Hello Erlang!~n").
+X = 42.
 
-apply(io, format, ["Hello Erlang!~n"]).
+% 逻辑表达式
 
-% 匿名函数
+true and true.
 
-F = fun(X) -> io:format("~w~n", [X]) end.
+false or true.
 
-F(42).
+true xor false.
 
+not (true and true).
 
-% 创建进程
+% 关系表达式
 
-[spawn(fun () -> timer:sleep(700), io:format("Erlang!~n") end) || X <- [1,2,3]].
+1 < 1.
 
+1 > 1.
 
-% 发送消息
+1 >= 1.
 
-self() ! {message, "Hello, Erlang Shell!"}.
+% 列表推导式
 
-% 接收消息
-
-flush().
+[X * 2 || X <- [1, 2, 3]].
 
 % 块表达式
 
@@ -176,9 +178,6 @@ case X =:= 1.0 of
 	  io:format("It's false~n")
 end.
 
-f().
-
-
 ```
 
 ### 结构式
@@ -186,7 +185,7 @@ f().
 Erlang 的结构式包含模块的属性和函数定义.
 
 ```erlang
-% quick.erl
+% user_default.erl
 
 % 模块
 
@@ -194,10 +193,10 @@ Erlang 的结构式包含模块的属性和函数定义.
 
 % -Name(Attribute).
 
--module(quick).
+-module(user_default).
 
 % 导出函数
--export([start/0]).
+-export([clear/0]).
 
 % 包含文件
 -include("include/data.hrl").
@@ -247,7 +246,7 @@ X.
 
 % 句点(.) 在 Erlang 代码中终结结构式
 
--module(quick).
+-module(user_default).
 
 ```
 
@@ -260,7 +259,52 @@ X.
 
 % 变量名必须首字母大写
 
-L = [1, 2, 3, 4, 5].
+N = 42.
+
+List = [1, 2, 3, 4, 5].
+
+Tuple = { tag, 1, 2}.
+
+
+% 操作符
+
+%% 精确相等性
+
+1 =:= 1.0.
+
+1 =/= 1.
+
+%% 不精确相等性
+
+1 /= 1
+1 == 1.0.
+
+%% 小于等于
+
+1 =< 1.
+
+%% 短路操作符
+
+false andalso true.
+
+true orelse false.
+
+
+%% 列表推导式
+
+[100 * N || N <- [1, 2, 3, 4, 5, 6], N rem 2 =:= 0, 100 * N > 400].
+
+%% 位语法
+
+Color = 16#FF0000.
+
+Pixel = <<Color:24>>.
+
+<<R:8, G:8, B:8>> = Pixel.
+
+R.
+
+<<R:8, Rest/binary>> = Pixel.
 
 % 无 for/while 循环结构, 使用递归/模式匹配
 
@@ -294,7 +338,6 @@ io:format("I't not a pure function~n").
 
 % 递归思想
 
-
 ```
 
 ### 函数
@@ -307,6 +350,12 @@ io:format("I't not a pure function~n").
 相比具名函数, 匿名函数作参数更为简便；不能递归调用.
 
 ```erlang
+
+% 匿名函数
+
+F = fun(X) -> io:format("~w~n", [X]) end.
+
+F(42).
 
 % 匿名函数的类型是函数
 
@@ -343,6 +392,13 @@ HandleOpen(file:open("/tmp/dummy", read)).
 具名函数必须定义在 `模块` 中.
 
 ```erlang
+
+% 函数调用 Module:Function(Arguments)
+
+io:format("Hello Erlang!~n").
+
+apply(io, format, ["Hello Erlang!~n"]).
+
 
 % 具名函数
 
@@ -473,9 +529,7 @@ double([1, 2, 3])
 
 
 ### 模块
-模块是一个具名文件, 包含一组具名函数(可能还有记录/宏).
-
-`erlang` 模块包含一组 `BIF` 函数, 被 `erl` 预先加载.
+模块是一个具名文件, 包含模块属性和具名函数定义.
 
 ```erlang
 % $HOME/.erlang.d/user_default.erl
@@ -485,16 +539,82 @@ double([1, 2, 3])
 
 clear() ->
   io:format(os:cmd(clear)).
+```
+
+`erlang` 模块包含一组 `BIF` 函数, 被 `erl` 预先加载.
+
+#### 函数定义
+
+```erlang
+-module(server).
+-export([start/2, stop/1, call/2]).
+-export([init/2]).
+
+-spec start(atom(),_) -> {ok,pid()}.
+
+start(Name, Args) ->
+  Pid = spawn(server, init, [Name, Args]),
+  register(Name, Pid),
+  {ok, Pid}.
+
+init(Mod, Args) ->
+  State = Mod:init(Args),
+  loop(Mod, State).
+
+stop(Name) ->
+  Name ! {stop, self()},
+  receive {reply, Reply} -> Reply end.
+
+call(Name, Msg) ->
+  Name ! {request, self(), Msg},
+  receive {reply, Reply} -> Reply end.
+
+reply(To, Reply) ->
+  To ! {reply, Reply}.
+
+loop(Mod, State) ->
+  receive
+    {request, From, Msg} ->
+      {NewState, Reply} = Mod:handle(Msg, State),
+      reply(From, Reply),
+      loop(Mod, NewState);
+    {stop, From} ->
+      Reply = Mod:terminate(State),
+      reply(From, Reply)
+  end.
 
 ```
 
+
+#### 宏定义
+
 ```erlang
 
-% 记录
--record(user, {id, name, age }).
+% 预定义宏
 
-% 宏
--define(PI, 3.14).
+% ?MODULE/?FILE/?LINE.
+
+-ifdef(DEBUG_MODE)
+alert() ->
+	io:format("Enable Debug Mode.~n").
+-else.
+-define(DEBUG, true).
+-endif.
+
+```
+
+#### 元数据
+
+```bash
+
+$ erl
+
+user_default:module_info().
+
+user_default:module_info(module).
+user_default:module_info(attributes).
+user_default:module_info(compile).
+user_default:module_info(md5).
 
 ```
 
@@ -508,6 +628,13 @@ Erlang 没有字符串类型.
 
 ```erlang
 % 数据类型
+
+%% 数值类型
+
+42.
+2#101010.
+8#52.
+16#2A.
 
 %% ★ 元组 {E₁, E₂, ..., Eₙ}
 
@@ -601,6 +728,11 @@ Erlang 采用 Actor 模型, 每个 Actor 都是虚拟机中的一个独立进程
 
 ```erlang
 
+% 创建进程
+
+[spawn(fun () -> timer:sleep(700), io:format("Erlang!~n") end) || X <- [1,2,3]].
+
+
 % 进程(Actor) & 消息传递
 
 F = fun () ->
@@ -616,6 +748,10 @@ Actor = spawn(fun () -> F() end).
 %% 发送消息
 
 Actor ! { self(), "Click" }.
+
+self() ! {message, "Hello, Erlang Shell!"}.
+
+% 接收消息
 
 flush().
 
@@ -718,6 +854,7 @@ erlang:monitor(process, spawn(fun() -> F() end)).
 flush().
 
 ```
+
 ## 分布式编程
 
 ### 节点
