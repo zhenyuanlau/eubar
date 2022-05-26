@@ -8,8 +8,8 @@ Learn
 
 Demo
 -----
-    $ erl -make
-    $ erl -pa ebin/
+    $ make compile
+    $ make console
 
     $ uba_app:start().
     $ reporter:call(query).
