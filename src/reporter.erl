@@ -16,8 +16,7 @@ init() ->
 loop() ->
   receive
     {request, Pid, query} ->
-      {ok, Reply} = file:read_file(?REPORT_FILE),
-      reply(Pid, Reply),
+      handle_open(Pid, file:read_file(?REPORT_FILE)),
       loop();
     {request, Pid, stop} ->
       reply(Pid, ok)
@@ -35,3 +34,8 @@ call(Message) ->
 
 reply(Pid, Reply) ->
   Pid ! {reply, Reply}.
+
+handle_open(Pid, {ok, Reply}) ->
+  reply(Pid, Reply);
+handle_open(Pid, {error, Reason}) ->
+  reply(Pid, Reason).

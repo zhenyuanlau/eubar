@@ -8,8 +8,8 @@ Learn
 
 Demo
 -----
-    $ make compile
     $ make start
+    > application:start(uba).
+    > whereis(reporter).
+    > reporter:call(query).
 
-    $ uba_app:start().
-    $ reporter:call(query).

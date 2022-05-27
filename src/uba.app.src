@@ -1,5 +1,5 @@
-{application, uba, [
-  {description, "The Demo of UBA App"},
+{application, uba,
+  [{description, "The Demo of UBA App"},
   {vsn, "1.0.0"},
   {modules, [uba_app, uba_sup, generator, collector, processor, reporter, dashboard]},
   {registered, [generator, collector, processor, reporter, dashboard]},

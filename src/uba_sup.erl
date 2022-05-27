@@ -1,11 +1,13 @@
 -module(uba_sup).
+
 -export([start/2, stop/1, init/1]).
 
 start(Name, ChildSpecList) ->
   register(Name, Pid = spawn(?MODULE, init, [ChildSpecList])),
   {ok, Pid}.
 
-stop(Name) -> Name ! stop.
+stop(Name) ->
+  Name ! stop.
 
 init(ChildSpecList) ->
   process_flag(trap_exit, true),

@@ -1,9 +1,9 @@
 -module(server).
+
 -export([start/2, stop/1, call/2]).
 -export([init/2]).
 
--spec start(atom(),_) -> {ok,pid()}.
-
+-spec start(atom(), _) -> {ok, pid()}.
 start(Name, Args) ->
   Pid = spawn(server, init, [Name, Args]),
   register(Name, Pid),
@@ -15,11 +15,17 @@ init(Mod, Args) ->
 
 stop(Name) ->
   Name ! {stop, self()},
-  receive {reply, Reply} -> Reply end.
+  receive
+    {reply, Reply} ->
+      Reply
+  end.
 
 call(Name, Msg) ->
   Name ! {request, self(), Msg},
-  receive {reply, Reply} -> Reply end.
+  receive
+    {reply, Reply} ->
+      Reply
+  end.
 
 reply(To, Reply) ->
   To ! {reply, Reply}.
