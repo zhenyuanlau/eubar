@@ -1,0 +1,4 @@
+%% encoding: UTF-8
+{application,uba}.
+{modules,[collector,dashboard,generator,processor,reporter,server,uba_app,
+          uba_sup]}.

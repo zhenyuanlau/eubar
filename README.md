@@ -13,3 +13,10 @@ Demo
     > whereis(reporter).
     > reporter:call(query).
 
+
+Tool
+-----
+
+    > observer:start().
+    > edoc:application(uba, ".", []).
+
