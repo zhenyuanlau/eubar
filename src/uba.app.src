@@ -5,16 +5,16 @@
 %%
 %% 应用启动配置
 %%
-%% 格式: {application, application_name [{Key, Value}, {Key, Value}, ...]}
+%% 格式: {application, Application, Properties}
 %%
-%% mod 指定启动入口
+%% mod 指定启动入口, uba_app::start/2
 %%
 %%
 {application, uba,
   [{description, "A Demo of the UBA App"},
   {vsn, "1.0.0"},
-  {modules, [uba_app, uba_sup, generator, collector, processor, reporter, dashboard]},
-  {registered, [generator, collector, processor, reporter, dashboard]},
-  {applications, []},
+  {modules, [uba_app, uba_sup, uba_reporter, generator, collector, processor, dashboard]},
+  {registered, []},
+  {applications, [kernel, stdlib, sasl]},
   {env, []},
   {mod, {uba_app, []}}]}.

@@ -3,39 +3,40 @@
 %%
 %% -behaviour(supervisor).
 %%
+%% 监督者规格包含重启规格和子进程规格
+%%
+%% 重启规格 {RestartType, MaxRestart, MaxTime}
+%%
+%% 重启策略 one_for_one/one_for_all/rest_for_one/simple_one_for_one
+%%
+%% 子进程规格 {Name, StartFunction, RestartType, ShutdownTime, ProcessType, Modules}
+%%
+%%
+%%
 -module(uba_sup).
 
--export([start/2, stop/1, init/1]).
+-behaviour(supervisor).
 
-start(Name, ChildSpecList) ->
-  register(Name, Pid = spawn(?MODULE, init, [ChildSpecList])),
-  {ok, Pid}.
+-export([start_link/0, init/1]).
 
-stop(Name) ->
-  Name ! stop.
+start_link() ->
+  supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-init(ChildSpecList) ->
-  process_flag(trap_exit, true),
-  loop(start_children(ChildSpecList)).
+init(_Args) ->
+  RestartType = one_for_one,
+  MaxRestart = 2,
+  MaxTime = 36000,
+  RestartTuple = {RestartType, MaxRestart, MaxTime},
+  ChildSpecList = [
+    child_spec(uba_reporter)
+  ],
+  {ok, {RestartTuple, ChildSpecList}}.
 
-start_children(ChildSpecList) ->
-  [{element(2, apply(M, F, A)), {M, F, A}} || {M, F, A} <- ChildSpecList].
-
-loop(ChildList) ->
-  receive
-    {'EXIT', Pid, normal} ->
-      loop(lists:keydelete(Pid, 1, ChildList));
-    {'EXIT', Pid, _Reason} ->
-      NewChildList = restart_child(Pid, ChildList),
-      loop(NewChildList);
-    stop ->
-      terminate(ChildList)
-  end.
-
-restart_child(Pid, ChildList) ->
-  {Pid, {M, F, A}} = lists:keyfind(Pid, 1, ChildList),
-  {ok, NewPid} = apply(M, F, A),
-  lists:keyreplace(Pid, 1, ChildList, {NewPid, {M, F, A}}).
-
-terminate(ChildList) ->
-  lists:foreach(fun({Pid, _}) -> exit(Pid, kill) end, ChildList).
+child_spec(Module) ->
+  Name = Module,
+  StartFunc = {Module, start_link, []},
+  RestartType = permanent,
+  ShutdownTime = 2000,
+  ProcessType = worker,
+  Modules = [Module],
+  {Name, StartFunc, RestartType, ShutdownTime, ProcessType, Modules}.

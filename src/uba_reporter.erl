@@ -1,42 +1,34 @@
 -module(uba_reporter).
 
--export([call/1]).
--export([start/0, init/1, loop/0, reply/2, stop/0]).
+-behaviour(gen_server).
+
+-export([query/0]).
+-export([start_link/0, init/1, handle_call/3, handle_cast/2]).
 
 -include("include/data.hrl").
 
--spec start() -> {ok, pid()}.
-start() ->
-  Pid = spawn(?MODULE, init, [[]]),
-  register(reporter, Pid),
-  {ok, Pid}.
+start_link() ->
+  gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 init(_Args) ->
-  loop().
+  {ok, state}.
 
-loop() ->
-  receive
-    {request, Pid, query} ->
-      handle_open(Pid, file:read_file(?REPORT_FILE)),
-      loop();
-    {request, Pid, stop} ->
-      reply(Pid, ok)
+query() ->
+  gen_server:call(?MODULE, query).
+
+handle_call(Request, _From, _State) ->
+  case Request of
+    query ->
+      Reply = handle_open(file:read_file(?REPORT_FILE)),
+      {reply, Reply, _State};
+    _Other ->
+      {reply, bad_request, _State}
   end.
 
-stop() ->
-  call(stop).
+handle_cast(Request, _State) ->
+  {noreply, gen_server:call(?MODULE, Request)}.
 
-call(Message) ->
-  reporter ! {request, self(), Message},
-  receive
-    {reply, Reply} ->
-      Reply
-  end.
-
-reply(Pid, Reply) ->
-  Pid ! {reply, Reply}.
-
-handle_open(Pid, {ok, Reply}) ->
-  reply(Pid, Reply);
-handle_open(Pid, {error, Reason}) ->
-  reply(Pid, Reason).
+handle_open({ok, Reply}) ->
+  Reply;
+handle_open({error, Reason}) ->
+  Reason.
