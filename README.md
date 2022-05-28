@@ -10,8 +10,8 @@ Demo
 -----
     $ make start
     > application:start(uba).
-    > whereis(reporter).
-    > reporter:call(query).
+    > whereis(uba_reporter).
+    > uba_reporter:call(query).
 
 
 Tool

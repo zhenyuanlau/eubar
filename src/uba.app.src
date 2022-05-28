@@ -3,7 +3,6 @@
   {vsn, "1.0.0"},
   {modules, [uba_app, uba_sup, generator, collector, processor, reporter, dashboard]},
   {registered, [generator, collector, processor, reporter, dashboard]},
-  {included_applications, [uba]},
-  {applications, [kernel, stdlib]},
+  {applications, [kernel, stdlib, sasl]},
   {mod, {uba_app, []}},
   {start_phases, []}]}.

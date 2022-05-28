@@ -1,7 +1,7 @@
--module(reporter).
+-module(uba_reporter).
 
--export([start/0, init/1, loop/0]).
--export([call/1, reply/2, stop/0]).
+-export([call/1]).
+-export([start/0, init/1, loop/0, reply/2, stop/0]).
 
 -include("include/data.hrl").
 

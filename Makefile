@@ -1,9 +1,9 @@
 .PHONY: clean compile start
 
-compile: clean src/*.erl
+compile:
 	@cp src/uba.app.src ebin/uba.app
-	@erl +debug_info -make
+	@erl -make
 start: compile
-	@erl -sname uba -boot start_sasl -pa ebin/ -config config/sys.config
+	@erl -sname uba -boot start_sasl -pa ebin/ -config config/elog.config
 clean:
-	@rm -fr ebin/*.beam erl_crash.dump logs/*.log ebin/*.app
+	@rm -fr ebin/*.beam erl_crash.dump logs/* ebin/*.app

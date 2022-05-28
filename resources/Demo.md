@@ -7,6 +7,12 @@
 1. Ad-Hoc
 2. Dashboard
 
+## 项目结构
+
+uba_app 负责系统的启动或停止
+uba_sup 监督所有进程
+uba.app.src 应用的元数据
+
 ## 服务组件
 
 ### generator(数据生成器)
