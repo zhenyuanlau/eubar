@@ -1,8 +1,20 @@
+%%
+%% https://www.erlang.org/doc/man/app.html
+%%
+%% 应用元数据文件 <application-name>.app
+%%
+%% 应用启动配置
+%%
+%% 格式: {application, application_name [{Key, Value}, {Key, Value}, ...]}
+%%
+%% mod 指定启动入口
+%%
+%%
 {application, uba,
-  [{description, "The Demo of UBA App"},
+  [{description, "A Demo of the UBA App"},
   {vsn, "1.0.0"},
   {modules, [uba_app, uba_sup, generator, collector, processor, reporter, dashboard]},
   {registered, [generator, collector, processor, reporter, dashboard]},
-  {applications, [kernel, stdlib, sasl]},
-  {mod, {uba_app, []}},
-  {start_phases, []}]}.
+  {applications, []},
+  {env, []},
+  {mod, {uba_app, []}}]}.

@@ -1,3 +1,8 @@
+%%
+%% 根监督者模块 <application-name>_sup.erl
+%%
+%% -behaviour(supervisor).
+%%
 -module(uba_sup).
 
 -export([start/2, stop/1, init/1]).
