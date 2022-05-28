@@ -10,14 +10,20 @@
 
 -export([start/2, stop/1]).
 
+-spec start(StartType :: term(), StartArgs :: term()) -> {ok, pid()}.
 start(_StartType, _StartArgs) ->
   ChildSpecList =
-    [{generator, start, []},
-     {collector, start, []},
-     {processor, start, []},
-     {uba_reporter, start, []},
-     {dashboard, start, []}],
+    [
+      child_spec(generator),
+      child_spec(collector),
+      child_spec(processor),
+      child_spec(uba_reporter),
+      child_spec(dashboard)],
   uba_sup:start(uba, ChildSpecList). % 启动根监督者
 
+-spec stop(State :: term()) -> ok.
 stop(_State) ->
   uba_sup:stop(uba).
+
+child_spec(Module) ->
+  {Module, start, []}.
