@@ -5,7 +5,7 @@
 -export([query/0]).
 -export([start_link/0, init/1, handle_call/3, handle_cast/2]).
 
--include("include/data.hrl").
+-include_lib("stdlib/include/qlc.hrl").
 
 start_link() ->
   gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
@@ -19,7 +19,7 @@ query() ->
 handle_call(Request, _From, _State) ->
   case Request of
     query ->
-      Reply = handle_open(file:read_file(?REPORT_FILE)),
+      Reply = do(qlc:q([X || X <- mnesia:table(event_view)])),
       {reply, Reply, _State};
     _Other ->
       {reply, bad_request, _State}
@@ -28,7 +28,7 @@ handle_call(Request, _From, _State) ->
 handle_cast(Request, _State) ->
   {noreply, gen_server:call(?MODULE, Request)}.
 
-handle_open({ok, Reply}) ->
-  Reply;
-handle_open({error, Reason}) ->
-  Reason.
+do(Q) ->
+  F = fun() -> qlc:e(Q) end,
+  {atomic, Val} = mnesia:transaction(F),
+  Val.

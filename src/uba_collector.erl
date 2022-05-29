@@ -2,6 +2,8 @@
 
 -behaviour(gen_event).
 
+-include("include/data.hrl").
+
 -export([start_link/0, init/1, handle_call/2, handle_event/2, terminate/2]).
 
 start_link() ->
@@ -10,11 +12,13 @@ start_link() ->
   {ok, Pid}.
 
 init(_Args) ->
-  {ok, []}.
+  TableId = ets:new(event, [ordered_set, {keypos, #event.evt_id}, named_table]),
+  {ok, TableId}.
 
-handle_event(Event, State) ->
-  error_logger:info_msg("***Received Event*** ~p~n", [Event]),
-  {ok, State}.
+handle_event(Event, TableId) ->
+  ets:insert_new(TableId, Event),
+  gen_event:notify(uba_processor, {TableId, Event}),
+  {ok, TableId}.
 
 handle_call(_Request, _State) ->
   {ok, reply, []}.

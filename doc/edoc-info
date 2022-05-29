@@ -1,4 +1,4 @@
 %% encoding: UTF-8
 {application,uba}.
-{modules,[uba_app,uba_collector,uba_dashboard,uba_generator,uba_processor,
-          uba_reporter,uba_sup]}.
+{modules,[uba_app,uba_collector,uba_dashboard,uba_generator,uba_misc,
+          uba_processor,uba_reporter,uba_sup]}.

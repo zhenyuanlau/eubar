@@ -6,17 +6,18 @@ Learn
 
 [快学 Erlang](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Erlang.md)
 
-Demo
+Dev
 -----
     $ make dev
-    > application:start(uba).
-    > whereis(uba_reporter).
+    > uba_misc:db_create().
+    > uba_misc:db_migrate().
+
+    > uba_misc:start().
+    > observer:start().
     > uba_reporter:query().
 
 
-Tool
+Doc
 -----
-
-    > observer:start().
     > edoc:application(uba, ".", []).
 
