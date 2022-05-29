@@ -13,8 +13,8 @@
 {application, uba,
   [{description, "A Demo of the UBA App"},
   {vsn, "1.0.0"},
-  {modules, [uba_app, uba_sup, uba_reporter, generator, collector, processor, dashboard]},
+  {modules, [uba_app, uba_sup, uba_reporter, uba_generator, collector, processor, dashboard]},
   {registered, []},
-  {applications, [kernel, stdlib, sasl]},
+  {applications, [kernel, stdlib]},
   {env, []},
   {mod, {uba_app, []}}]}.

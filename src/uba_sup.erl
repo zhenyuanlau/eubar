@@ -28,7 +28,8 @@ init(_Args) ->
   MaxTime = 36000,
   RestartTuple = {RestartType, MaxRestart, MaxTime},
   ChildSpecList = [
-    child_spec(uba_reporter)
+    child_spec(uba_reporter),
+    child_spec(uba_generator)
   ],
   {ok, {RestartTuple, ChildSpecList}}.
 
