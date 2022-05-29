@@ -205,7 +205,7 @@ Erlang 的结构式包含模块的属性和函数定义.
 -export([clear/0]).
 
 % 包含文件
--include("include/data.hrl").
+-include("include/records.hrl").
 
 % 定义宏
 
@@ -601,7 +601,7 @@ loop(Mod, State) ->
 % module.erl
 
 %% 文件包含
--include("include/data.hrl").
+-include("include/records.hrl").
 
 ```
 

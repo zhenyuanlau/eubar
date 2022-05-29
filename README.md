@@ -20,4 +20,3 @@ Dev
 Doc
 -----
     > edoc:application(uba, ".", []).
-

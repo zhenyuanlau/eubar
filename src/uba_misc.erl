@@ -1,12 +1,15 @@
 -module(uba_misc).
 
--export([start/0, db_create/0, db_migrate/0]).
+-export([start/0, stop/0, db_create/0, db_migrate/0]).
 
--include("include/data.hrl").
+-include("include/records.hrl").
 
 start() ->
   application:start(mnesia),
   application:start(uba).
+
+stop() ->
+  init:stop().
 
 db_create() ->
   mnesia:create_schema([node()]).

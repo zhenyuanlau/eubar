@@ -13,5 +13,3 @@
          usr_id = 0,
          usr_name = "",
          usr_mobile = ""}).
-
--define(REPORT_FILE, "/tmp/reports/report").

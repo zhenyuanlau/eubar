@@ -2,7 +2,7 @@
 
 -behaviour(gen_event).
 
--include("include/data.hrl").
+-include("include/records.hrl").
 
 -export([start_link/0, init/1, handle_call/2, handle_event/2, terminate/2]).
 
