@@ -5,40 +5,20 @@
 ## 功能特性
 
 1. Ad-Hoc
-2. Dashboard(计划外)
-
-## 项目结构
-
-uba_app 负责系统的启动或停止
-uba_sup 监督所有进程
-uba.app.src 应用的元数据
+2. Dashboard
 
 ## 服务组件
 
-### generator(数据生成器)
-### collector(数据采集器)
-### processor(数据处理器)
-### reporter(报表服务器)
-### dashboard(看板服务器)
+- generator(gen_statem)
+- collector(gen_event)
+- processor(gen_event)
+- reporter(gen_server)
+- dashboard(gen_server)
 
 ## 数据模型
 
-```erlang
-% event
-% user
-```
+见 [records.hrl](https://github.com/zhenyuanlau/erlang-spec/blob/main/src/include/records.hrl).
 
 ## 接口设计
 
-```erlang
-% generator
-
-% collector
-
-% processor
-
-% reporter
-
-% dashboard
-
-```
+见 [EDoc](https://github.com/zhenyuanlau/erlang-spec/blob/main/doc/index.html).

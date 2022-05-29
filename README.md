@@ -4,19 +4,32 @@ Erlang Spec
 Learn
 -----
 
-[快学 Erlang](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Erlang.md)
+[Quick Erlang](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Erlang.md)
+
+[Demo App](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Demo.md)
 
 Dev
 -----
-    $ make dev
-    > uba_misc:db_create().
-    > uba_misc:db_migrate().
+```bash
+make dev
+```
 
-    > uba_misc:start().
-    > observer:start().
-    > uba_reporter:query().
+```erl
+uba_misc:db_create().
+uba_misc:db_migrate().
+```
 
+```erl
+uba_misc:start().
+
+observer:start().
+
+uba_reporter:query().
+```
 
 Doc
 -----
-    > edoc:application(uba, ".", []).
+
+```erl
+edoc:application(uba, ".", []).
+```
