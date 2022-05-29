@@ -30,6 +30,6 @@ uba_reporter:query().
 Doc
 -----
 
-```erl
-edoc:application(uba, ".", []).
+```bash
+make doc
 ```
