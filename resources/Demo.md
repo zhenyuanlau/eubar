@@ -5,7 +5,7 @@
 ## 功能特性
 
 1. Ad-Hoc
-2. Dashboard
+2. Dashboard(计划外)
 
 ## 项目结构
 

@@ -20,7 +20,7 @@ emit(enter, _OldState, Data) ->
   gen_statem:cast(?MODULE, emit),
   {keep_state, Data + 1};
 emit(cast, _OldState, Data) ->
-  error_logger:info_msg("emit"),
+  gen_event:notify(uba_collector, emit),
   {keep_state, Data + 1, [{state_timeout, 5000, emit}]};
 emit(state_timeout, emit, Data) ->
   gen_statem:cast(?MODULE, emit),

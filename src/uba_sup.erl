@@ -27,10 +27,12 @@ init(_Args) ->
   MaxRestart = 2,
   MaxTime = 36000,
   RestartTuple = {RestartType, MaxRestart, MaxTime},
-  ChildSpecList = [
-    child_spec(uba_reporter),
-    child_spec(uba_generator)
-  ],
+  ChildSpecList =
+    [child_spec(uba_collector),
+     child_spec(uba_dashboard),
+     child_spec(uba_reporter),
+     child_spec(uba_processor),
+     child_spec(uba_generator)],
   {ok, {RestartTuple, ChildSpecList}}.
 
 child_spec(Module) ->
