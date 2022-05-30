@@ -5,6 +5,8 @@
 -include("include/records.hrl").
 
 start() ->
+  db_create(),
+  db_migrate(),
   application:start(mnesia),
   application:start(uba).
 

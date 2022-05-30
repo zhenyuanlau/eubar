@@ -15,6 +15,6 @@
   {vsn, "1.0.0"},
   {modules, [uba_app, uba_sup, uba_reporter, uba_generator, uba_collector, uba_processor, uba_dashboard]},
   {registered, []},
-  {applications, [kernel, stdlib, mnesia]},
+  {applications, [kernel, stdlib]},
   {env, []},
   {mod, {uba_app, []}}]}.

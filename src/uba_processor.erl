@@ -14,8 +14,7 @@ start_link() ->
 init(_InitArgs) ->
   {ok, []}.
 
-handle_event({TableId, Event}, _State) ->
-  error_logger:info_msg("~p~p~n", [TableId, Event]),
+handle_event({_TableId, _Event}, _State) ->
   Fun = fun() -> mnesia:write(#event_view{}) end,
   mnesia:activity(transaction, Fun),
   {ok, []}.
