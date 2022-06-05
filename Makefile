@@ -20,4 +20,4 @@ release: compile
 clean:
 	@rm -fr ebin/* erl_crash.dump logs/* tmp/db ttb_last_config build/*
 shell: release
-	@erl -pa ebin/ -pa build/ -boot uba -config config/debug.config
+	@erl -sname uba -pa ebin/ -pa build/ -boot uba -config config/debug.config

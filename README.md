@@ -6,7 +6,7 @@ Learn
 
 [Quick Erlang](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Erlang.md)
 
-[Demo App](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Demo.md)
+[UBA Demo](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/UBA.md)
 
 Dev
 -----
@@ -20,11 +20,4 @@ observer:start().
 uba_reporter:query().
 
 init:stop().
-```
-
-Doc
------
-
-```bash
-make doc
 ```

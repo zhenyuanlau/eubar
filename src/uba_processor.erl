@@ -2,21 +2,22 @@
 
 -behaviour(gen_event).
 
--include("include/records.hrl").
-
 -export([start_link/0, init/1, handle_call/2, handle_event/2]).
 
 start_link() ->
-  {ok, Pid} = gen_event:start_link({local, ?MODULE}),
-  gen_event:add_handler(?MODULE, ?MODULE, []),
-  {ok, Pid}.
+  case gen_event:start_link({local, ?MODULE}) of
+    {ok, Pid} ->
+      gen_event:add_sup_handler(?MODULE, uba_counter, []),
+      gen_event:add_sup_handler(?MODULE, uba_sinker, []),
+      {ok, Pid};
+    Error ->
+      Error
+  end.
 
 init(_InitArgs) ->
   {ok, []}.
 
-handle_event({_TableId, _Event}, _State) ->
-  Fun = fun() -> mnesia:write(#event_view{}) end,
-  mnesia:activity(transaction, Fun),
+handle_event(_Event, _State) ->
   {ok, []}.
 
 handle_call(_Request, _State) ->

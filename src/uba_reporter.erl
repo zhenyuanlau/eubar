@@ -19,7 +19,7 @@ query() ->
 handle_call(Request, _From, _State) ->
   case Request of
     query ->
-      Reply = do(qlc:q([X || X <- mnesia:table(event_view)])),
+      Reply = do(qlc:q([X || X <- mnesia:table(event)])),
       {reply, Reply, _State};
     _Other ->
       {reply, bad_request, _State}

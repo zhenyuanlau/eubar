@@ -8,17 +8,11 @@
 %%
 -module(uba_app).
 
--include("include/records.hrl").
-
 -behaviour(application).
 
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-  mnesia:create_schema([node()]),
-  mnesia:start(),
-  mnesia:create_table(event_view, [{attributes, record_info(fields, event_view)}]),
-  mnesia:wait_for_tables([event_view], 5000),
   uba_sup:start_link(). % 启动根监督者
 
 stop(_State) ->
