@@ -5,7 +5,7 @@
 -export([init/1, handle_event/2, handle_call/2]).
 
 init([]) ->
-  TableId = ets:new(counters, []),
+  TableId = ets:new(?MODULE, []),
   {ok, TableId}.
 
 handle_event(Event, TableId) ->

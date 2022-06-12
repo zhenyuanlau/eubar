@@ -10,7 +10,12 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    eubar_sup:start_link().
+    case eubar_sup:start_link() of
+        {ok, Sup} ->
+            {ok, Sup};
+        {error, _Reason} = Error ->
+            Error
+    end.
 
 stop(_State) ->
     ok.

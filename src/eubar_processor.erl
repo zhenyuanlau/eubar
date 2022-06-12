@@ -7,8 +7,8 @@
 start_link() ->
   case gen_event:start_link({local, ?MODULE}) of
     {ok, Pid} ->
-      gen_event:add_sup_handler(?MODULE, uba_counter, []),
-      gen_event:add_sup_handler(?MODULE, uba_sinker, []),
+      add_event_handler(eubar_counter, []),
+      add_event_handler(eubar_sinker, []),
       {ok, Pid};
     Error ->
       Error
@@ -22,3 +22,7 @@ handle_event(_Event, _State) ->
 
 handle_call(_Request, _State) ->
   {ok, reply, []}.
+
+%% private
+add_event_handler(Handler, Args) ->
+  gen_event:add_sup_handler(?MODULE, Handler, Args).
