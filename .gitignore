@@ -17,9 +17,3 @@ _build
 *.iml
 rebar3.crashdump
 *~
-ttb_last_config
-tmp/*
-!tmp/.keep
-
-build/*
-!build/.keep

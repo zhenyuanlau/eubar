@@ -1,4 +1,4 @@
--module(uba_processor).
+-module(eubar_processor).
 
 -behaviour(gen_event).
 

@@ -1,8 +1,8 @@
--module(uba_generator).
+-module(eubar_generator).
 
 -behaviour(gen_statem).
 
--include("uba.hrl").
+-include("eubar.hrl").
 
 -export([start_link/0, init/1, callback_mode/0]).
 -export([emit/3]).
@@ -27,7 +27,7 @@ emit(cast, _OldState, {Counter, EventList}) ->
   Event =
     #event{evt_id = Counter,
            evt_key = element(Counter rem tuple_size(EventList) + 1, EventList)},
-  gen_server:call(uba_collector, {event, Event}),
+  gen_server:call(eubar_collector, {event, Event}),
   {keep_state, {Counter + 1, EventList}, [{state_timeout, 7000, emit}]};
 emit(state_timeout, emit, Data) ->
   gen_statem:cast(?MODULE, emit),

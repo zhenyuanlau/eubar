@@ -1,4 +1,4 @@
--module(uba_counter).
+-module(eubar_counter).
 
 -behaviour(gen_event).
 

@@ -1,4 +1,0 @@
-%% encoding: UTF-8
-{application,uba}.
-{modules,[uba_app,uba_collector,uba_counter,uba_dashboard,uba_generator,
-          uba_processor,uba_reporter,uba_sinker,uba_sup]}.

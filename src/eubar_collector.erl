@@ -1,4 +1,4 @@
--module(uba_collector).
+-module(eubar_collector).
 
 -behaviour(gen_server).
 
@@ -11,7 +11,7 @@ init(_Args) ->
   {ok, []}.
 
 handle_call({event, Event}, _From, State) ->
-  gen_event:notify(uba_processor, Event),
+  gen_event:notify(eubar_processor, Event),
   {reply, ok, State}.
 
 handle_cast(Request, _State) ->

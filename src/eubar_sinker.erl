@@ -1,10 +1,10 @@
--module(uba_sinker).
+-module(eubar_sinker).
 
 -behaviour(gen_event).
 
 -export([init/1, handle_event/2, handle_call/2]).
 
--include("uba.hrl").
+-include("eubar.hrl").
 
 init([]) ->
   mnesia:create_schema([node()]),

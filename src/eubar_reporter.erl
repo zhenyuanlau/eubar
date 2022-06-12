@@ -1,4 +1,4 @@
--module(uba_reporter).
+-module(eubar_reporter).
 
 -behaviour(gen_server).
 
