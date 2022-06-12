@@ -1,23 +1,11 @@
 EUBAR
 =====
 
-UBA Demo App build on Erlang/OTP.
+An OTP application, UBA Demo.
 
-Start
+Build
 -----
 
 ```bash
-
-$ make shell
-
-> observer:start().
-
-> uba_reporter:query().
-
-> init:stop().
+rebar3 compile
 ```
-
-Target
------
-
-Erlang/OTP Tech Practice.
