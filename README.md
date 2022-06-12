@@ -1,23 +1,23 @@
-Erlang Spec
+EUBAR
 =====
 
-Learn
+UBA Demo App build on Erlang/OTP.
+
+Start
 -----
 
-[Quick Erlang](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/Erlang.md)
-
-[UBA Demo](https://github.com/zhenyuanlau/erlang-spec/blob/main/resources/UBA.md)
-
-Dev
------
 ```bash
-make shell
+
+$ make shell
+
+> observer:start().
+
+> uba_reporter:query().
+
+> init:stop().
 ```
 
-```erl
-observer:start().
+Target
+-----
 
-uba_reporter:query().
-
-init:stop().
-```
+Erlang/OTP Tech Practice.
